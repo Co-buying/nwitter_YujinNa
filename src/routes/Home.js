@@ -20,7 +20,7 @@ const Home =()=> {
     const onSubmit= async(event)=>{
         event.preventDefault();
         await dbService.collection("nweets").add({
-            nweet,
+            text:nweet, //nweet은 state인 nweet의 value임
             createdAt: Date.now(),
         });
         setNweet(""); //빈 문자열로 돌아가게끔
