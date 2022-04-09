@@ -20,7 +20,7 @@ const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
     const onSubmit= async(event)=>{
         event.preventDefault();
         let attachmentUrl="";
-        if(attachment!=""){
+        if(attachment!==""){
             const attachmentRef=storageService.ref().child(`${userObj.uid}/${uuidv4()}`);//userid 기준으로 폴더 나눠서 들어감
             const response=await attachmentRef.putString(attachment,"data_url");
             // console.log(response);
