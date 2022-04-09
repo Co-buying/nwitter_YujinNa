@@ -1,11 +1,12 @@
+import { dbService } from "fbase";
 import React from "react";
 
 const Nweet=({nweetObj, isOwner})=>{
-    const onDeleteClick=()=>{
+    const onDeleteClick=async()=>{
         const ok=window.confirm("Are you sure you want to delete this nweet?");
-        
         if(ok){
             //delete
+            await dbService.doc(`nweets/${nweetObj.id}`).delete();
         }
     }
     return (
