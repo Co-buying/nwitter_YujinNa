@@ -28,6 +28,17 @@ const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
         const{target:{value}}=event;
         setNweet(value);
     };
+    const onFileChange=(event)=>{
+        // console.log(event.target.files);
+        const {target : {files},
+        } =event;
+        const theFile=files[0];
+        const reader=new FileReader();
+        reader.onloadend=(finishedEvent)=>{ //밑의 reader.readAsDataURL실행후, 끝나면 이 라인 실행(finishedEvent)
+            // console.log(finishedEvent);
+        }
+        reader.readAsDataURL(theFile);
+    };
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -38,6 +49,7 @@ const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
                     placeholder="What's on your mind?" 
                     maxLength={120} 
                 />
+                <input type="file" accept="image/*" onChange={onFileChange} />
                 <input type="submit" value="Nweet" />
             </form>
             <div>
