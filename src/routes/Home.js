@@ -4,6 +4,7 @@ import Nweet from "components/Nweet";
 const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
     const [nweet,setNweet]=useState("");
     const [nweets,setNweets]=useState([]);
+    const [attachment,setAttachment]=useState();
     useEffect(()=>{
         dbService.collection("nweets").onSnapshot((snapshot)=>{
             //새로운 snapshhot받을때 배열(nweetArray)을 만듦
@@ -34,11 +35,15 @@ const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
         } =event;
         const theFile=files[0];
         const reader=new FileReader();
-        reader.onloadend=(finishedEvent)=>{ //밑의 reader.readAsDataURL실행후, 끝나면 이 라인 실행(finishedEvent)
+        reader.onloadend=(finishedEvent)=>{ //파일 로딩이나 리딩후, 끝나면 이 라인 실행(finishedEvent)
+            //어쨌든 얘도 이벤트리스너임
             // console.log(finishedEvent);
-        }
+            const {currentTarget:{result}}=finishedEvent;
+            setAttachment(result);
+        };
         reader.readAsDataURL(theFile);
     };
+    const onClearAttachment=()=>setAttachment(null);
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -51,6 +56,12 @@ const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
                 />
                 <input type="file" accept="image/*" onChange={onFileChange} />
                 <input type="submit" value="Nweet" />
+                {attachment && (
+                    <div>
+                        <img src={attachment} width="50px" height="50px" />
+                        <button onClick={onClearAttachment}>Clear image</button>
+                    </div>
+                    )}            
             </form>
             <div>
                 {nweets.map((nweet)=>(
