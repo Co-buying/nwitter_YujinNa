@@ -1,5 +1,6 @@
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import React, { useEffect, useState } from "react";
+import {v4 as uuidv4} from "uuid";
 import Nweet from "components/Nweet";
 const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
     const [nweet,setNweet]=useState("");
@@ -18,12 +19,16 @@ const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
     },[]);
     const onSubmit= async(event)=>{
         event.preventDefault();
-        await dbService.collection("nweets").add({
-            text:nweet, //nweet은 state인 nweet의 value임
-            createdAt: Date.now(),
-            creatorId:userObj.uid,
-        });
-        setNweet(""); //빈 문자열로 돌아가게끔
+        const fileRef=storageService.ref().child(`${userObj.uid}/${uuidv4()}`);//userid 기준으로 폴더 나눠서 들어감
+        const response=await fileRef.putString(attachment,"data_url");
+        // console.log(response);
+
+        // await dbService.collection("nweets").add({
+        //     text:nweet, //nweet은 state인 nweet의 value임
+        //     createdAt: Date.now(),
+        //     creatorId:userObj.uid,
+        // });
+        // setNweet(""); //빈 문자열로 돌아가게끔
     };
     const onChange=(event)=>{
         const{target:{value}}=event;
