@@ -5,7 +5,7 @@ import Nweet from "components/Nweet";
 const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
     const [nweet,setNweet]=useState("");
     const [nweets,setNweets]=useState([]);
-    const [attachment,setAttachment]=useState();
+    const [attachment,setAttachment]=useState("");
     useEffect(()=>{
         dbService.collection("nweets").onSnapshot((snapshot)=>{
             //새로운 snapshhot받을때 배열(nweetArray)을 만듦
@@ -19,16 +19,23 @@ const Home =({ userObj })=> { //userObj변수는 곧 loggeduser을 의미
     },[]);
     const onSubmit= async(event)=>{
         event.preventDefault();
-        const fileRef=storageService.ref().child(`${userObj.uid}/${uuidv4()}`);//userid 기준으로 폴더 나눠서 들어감
-        const response=await fileRef.putString(attachment,"data_url");
-        // console.log(response);
-
-        // await dbService.collection("nweets").add({
-        //     text:nweet, //nweet은 state인 nweet의 value임
-        //     createdAt: Date.now(),
-        //     creatorId:userObj.uid,
-        // });
-        // setNweet(""); //빈 문자열로 돌아가게끔
+        let attachmentUrl="";
+        if(attachment!=""){
+            const attachmentRef=storageService.ref().child(`${userObj.uid}/${uuidv4()}`);//userid 기준으로 폴더 나눠서 들어감
+            const response=await attachmentRef.putString(attachment,"data_url");
+            // console.log(response);
+            attachmentUrl=await response.ref.getDownloadURL();
+        }
+        const nweetObj={
+                text:nweet, //nweet은 state인 nweet의 value임
+                createdAt: Date.now(),
+                creatorId:userObj.uid,
+                attachmentUrl
+        }
+        await dbService.collection("nweets").add(nweetObj);
+        
+        setNweet(""); //빈 문자열로 돌아가게끔
+        setAttachment("");
     };
     const onChange=(event)=>{
         const{target:{value}}=event;
