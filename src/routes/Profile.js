@@ -1,9 +1,14 @@
 import { authService} from "fbase";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { updateProfile } from "@firebase/auth";
 export default ({refreshUser,userObj}) => {
+    const history=useHistory();
     const [newDisplayName,setNewDisplayName]=useState(userObj.displayName);
-    const onLogOutClick=()=>authService.signOut();
+    const onLogOutClick=()=>{
+        authService.signOut();
+        history.push("/");
+    }
     const onChange=(event)=>{
         const{target:{value},} =event;
         setNewDisplayName(value);
@@ -16,20 +21,28 @@ export default ({refreshUser,userObj}) => {
         }
     };
     return (
-        <>
-            <form onSubmit={onSubmit}>
+        <div className="container">
+            <form onSubmit={onSubmit} className="profileForm">
                 <input 
                     type="text" 
                     onChange={onChange}
+                    autoFocus
+                    className="formInput"
                     value={newDisplayName}
                     placeholder="Display name" 
                 />
                 <input 
                     type="submit" 
+                    className="formBtn"
+                    style={{
+                        marginTop:10,
+                    }}
                     value="Update profile" 
                 />
             </form>
-            <button onClick={onLogOutClick}>Log Out</button>
-        </>
+            <span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+                Log Out
+            </span>
+        </div>
     )
 };

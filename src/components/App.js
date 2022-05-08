@@ -13,7 +13,7 @@ function App() {
         setUserObj({
           displayName:user.displayName,
           uid: user.uid,
-          updateProfile:(args)=>user.updateProfile(user, { displayName: user.displayName }),
+          updateProfile:(args)=>user.updateProfile(args),
         });
       } else {
         setUserObj(null); //로그아웃
@@ -32,13 +32,22 @@ function App() {
       uid: user.uid,
       updateProfile:(args)=>user.updateProfile(user, { displayName: user.displayName }),
     });
-  }
+  };
   return (
     <>
-      {init? <AppRouter refreshUser={refreshUser} isLoggedIn={Boolean(userObj)} userObj={userObj}/> : "Initializing.."}
-      <footer>&copy;Nwitter{new Date().getFullYear(
+      {init? (
+        <AppRouter 
+          refreshUser={refreshUser} 
+          isLoggedIn={Boolean(userObj)} 
+          userObj={userObj}
+        />
+      ) : (
+        "Initializing.."
+        )}
+      
+      {/* <footer>&copy;Nwitter{new Date().getFullYear(
 
-      )}</footer>
+      )}</footer> */}
     </>
   );
 }
