@@ -6,22 +6,23 @@ function App() {
   const [init,setInit]=useState(false);
   const [userObj,setUserObj]=useState(null); //userObj가 위쪽에 있는 이유: 다른페이지에서 userObj를 원할수있기에
   useEffect(()=>{
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
+    // const auth = getAuth();
+    // onAuthStateChanged(auth, (user) => {
       //onAuthStateChanged는 로그인,로그아웃, 어플리케이션 초기화시 발생
-    if (user) {
+    authService.onAuthStateChanged((user)=>{
+      if (user) {
         setUserObj({
           displayName:user.displayName,
           uid: user.uid,
           updateProfile:(args)=>user.updateProfile(args),
         });
-      } else {
-        setUserObj(null); //로그아웃
+      // } else {
+      //   setUserObj(null); //로그아웃
       }
-    if(user.displayName===null){
-      const name = user.email.split("@")[0];
-      user.displayName = name;
-    }
+    // if(user.displayName===null){
+    //   const name = user.email.split("@")[0];
+    //   user.displayName = name;
+    // }
       setInit(true);
     });
   },[]);
@@ -30,7 +31,7 @@ function App() {
     setUserObj({
       displayName:user.displayName,
       uid: user.uid,
-      updateProfile:(args)=>user.updateProfile(user, { displayName: user.displayName }),
+      updateProfile:(args) => user.updateProfile(args),
     });
   };
   return (
