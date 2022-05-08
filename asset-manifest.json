@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/nwitter_YujinNa/static/css/main.d34172d5.css",
+    "main.js": "/nwitter_YujinNa/static/js/main.1be8a124.js",
+    "index.html": "/nwitter_YujinNa/index.html",
+    "main.d34172d5.css.map": "/nwitter_YujinNa/static/css/main.d34172d5.css.map",
+    "main.1be8a124.js.map": "/nwitter_YujinNa/static/js/main.1be8a124.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d34172d5.css",
+    "static/js/main.1be8a124.js"
+  ]
+}
