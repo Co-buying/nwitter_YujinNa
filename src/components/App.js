@@ -15,6 +15,8 @@ function App() {
           uid: user.uid,
           updateProfile:(args)=>user.updateProfile(user, { displayName: user.displayName }),
         });
+      } else {
+        setUserObj(null); //로그아웃
       }
     if(user.displayName===null){
       const name = user.email.split("@")[0];
